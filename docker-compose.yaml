@@ -7,7 +7,7 @@ services:
       - "traefik.enable=true"
       # Router configuration
       - "traefik.http.routers.cv.rule=Host(`devapis.cloud`) && PathPrefix(`/cv`)"
-      - "traefik.http.routers.cv.entrypoints=websecure"
+      - "traefik.http.routers.cv.entrypoints=https"
       - "traefik.http.routers.cv.tls=true"
       - "traefik.http.routers.cv.tls.certresolver=resolver"
       # Middleware: remove /cv prefix before sending to nginx
