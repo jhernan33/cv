@@ -1,644 +1,497 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+	<!-- Meta Tags: Encoding & Viewport -->
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="CV de José Hernán Varela, Senior Backend Developer especializado en Python, Django, FastAPI y PostgreSQL.">
-	<title>CV - José Hernán Varela</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Meta Tags: SEO -->
+	<meta name="description" content="CV de José Hernán Varela, Senior Backend Developer especializado en Python, Django, FastAPI y PostgreSQL. 14+ años de experiencia en desarrollo de APIs escalables y sistemas de bases de datos.">
+	<meta name="keywords" content="Backend Developer, Python, Django, FastAPI, PostgreSQL, DevOps, Docker, APIs REST">
+	<meta name="author" content="José Hernán Varela">
+	<meta name="theme-color" content="#667eea">
+
+	<!-- Meta Tags: Open Graph (Redes Sociales) -->
+	<meta property="og:title" content="José Hernán Varela - Senior Backend Developer">
+	<meta property="og:description" content="Senior Backend Developer con 14+ años de experiencia en Python, Django, FastAPI y PostgreSQL">
+	<meta property="og:type" content="profile">
+	<meta property="og:url" content="https://devapis.cloud/cv">
+
+	<!-- Meta Tags: Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="CV - José Hernán Varela">
+	<meta name="twitter:description" content="Senior Backend Developer - Python • Django • FastAPI">
+
+	<!-- Canonical URL -->
+	<link rel="canonical" href="https://devapis.cloud/cv">
+
+	<!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-weight='bold' fill='%23667eea'>JH</text></svg>">
+	<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23667eea' width='180' height='180'/><text y='110' font-size='120' font-weight='bold' fill='white' x='50'>JH</text></svg>">
+
+	<!-- CSS Stylesheet -->
 	<link rel="stylesheet" href="styles.css">
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', 'Calibri', 'Arial', sans-serif;
-            line-height: 1.5;
-            color: #2d3748;
-            background: #fdfdfd;
-            max-width: 8.5in;
-            margin: 0 auto;
-            padding: 0.75in;
-            font-size: 11pt;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-        }
-        
-        .name {
-            font-size: 28pt;
-            font-weight: 300;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .title {
-            font-size: 14pt;
-            opacity: 0.95;
-            font-weight: 400;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-        }
-        
-        .contact-info {
-            font-size: 10pt;
-            line-height: 1.8;
-            opacity: 0.9;
-        }
-        
-        .contact-info a {
-            color: #e2e8f0;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .contact-info a:hover {
-            color: #ffffff;
-        }
-        
-        .remote-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-            margin-top: 8px;
-            display: inline-block;
-            backdrop-filter: blur(10px);
-        }
-        
-        .section {
-            margin-bottom: 25px;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .section-title {
-            font-size: 13pt;
-            font-weight: 600;
-            color: #4a5568;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            padding: 15px 20px;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .section-content {
-            padding: 20px;
-        }
-        
-        .profile-text {
-            text-align: justify;
-            margin-bottom: 15px;
-            font-size: 11pt;
-            line-height: 1.6;
-            color: #2d3748;
-        }
-        
-        .expertise {
-            background: #f0f4f8;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 3px solid #4299e1;
-            font-weight: 500;
-            color: #2b6cb0;
-            font-size: 10.5pt;
-        }
-        
-        .job {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-            page-break-inside: avoid;
-        }
-        
-        .job:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .job-header {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            border-left: 3px solid #a0aec0;
-        }
-        
-        .job-title-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .job-title {
-            font-size: 12pt;
-            font-weight: 600;
-            color: #2d3748;
-        }
-        
-        .company {
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .job-period {
-            font-size: 10pt;
-            color: #718096;
-            font-weight: 500;
-            background: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-        
-        .job-location {
-            font-size: 10pt;
-            color: #718096;
-            font-style: italic;
-        }
-        
-        .job-description {
-            margin-left: 0;
-            margin-top: 12px;
-        }
-        
-        .job-description li {
-            margin-bottom: 6px;
-            list-style-type: none;
-            position: relative;
-            padding-left: 20px;
-            color: #4a5568;
-            line-height: 1.5;
-        }
-        
-        .job-description li:before {
-            content: "▸";
-            color: #667eea;
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        
-        .stack {
-            margin-top: 12px;
-            font-size: 10pt;
-            background: #edf2f7;
-            padding: 8px 12px;
-            border-radius: 20px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-        
-        .stack-label {
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .skill-category {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            border-top: 3px solid #a0aec0;
-            margin-bottom: 8px;
-        }
-        
-        .skill-category h4 {
-            font-size: 11pt;
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .skill-category h4:before {
-            content: "●";
-            color: #667eea;
-            margin-right: 8px;
-            font-size: 8pt;
-        }
-        
-        .skill-list {
-            font-size: 10pt;
-            color: #2d3748;
-            line-height: 1.5;
-            font-weight: 400;
-        }
-        
-        .cert-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        
-        .cert-item, .edu-item, .lang-item, .project-item {
-            margin-bottom: 12px;
-            padding: 12px;
-            background: #f8fafc;
-            border-radius: 6px;
-            border-left: 3px solid #cbd5e0;
-        }
-        
-        .cert-title, .edu-title, .project-title {
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 4px;
-        }
-        
-        .cert-year, .edu-year {
-            color: #718096;
-            font-style: italic;
-            font-size: 10pt;
-        }
-        
-        .lang-level {
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .lang-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .availability {
-            background: linear-gradient(135deg, #e6fffa 0%, #f0fff4 100%);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #9ae6b4;
-        }
-        
-        .availability-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .availability-item {
-            font-size: 10pt;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .availability-label {
-            font-weight: 600;
-            color: #2f855a;
-            margin-left: 8px;
-        }
-        
-        .check-icon {
-            color: #48bb78;
-            font-weight: bold;
-            font-size: 12pt;
-        }
-        
-        .quote {
-            text-align: center;
-            font-style: italic;
-            color: #718096;
-            margin-top: 25px;
-            padding: 20px;
-            background: #f7fafc;
-            border-radius: 8px;
-            border-top: 3px solid #667eea;
-            font-size: 11pt;
-        }
-        
-        .highlight {
-            background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            color: #c05621;
-        }
-        
-        .project-tech {
-            font-size: 10pt;
-            color: #667eea;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-        
-        .project-desc {
-            font-size: 10pt;
-            color: #4a5568;
-            margin-bottom: 4px;
-            padding-left: 12px;
-            position: relative;
-        }
-        
-        .project-desc:before {
-            content: "→";
-            color: #a0aec0;
-            position: absolute;
-            left: 0;
-        }
-        
-        @media print {
-            body {
-                padding: 0.5in;
-                font-size: 10pt;
-            }
-            
-            .name {
-                font-size: 24pt;
-            }
-            
-            .title {
-                font-size: 12pt;
-            }
-            
-            .section-title {
-                font-size: 11pt;
-            }
-            
-            .header {
-                background: #667eea !important;
-            }
-            
-            .section {
-                box-shadow: none;
-                border: 1px solid #e2e8f0;
-            }
-        }
-	</style>
+
+	<title>José Hernán Varela - Senior Backend Developer | CV</title>
 </head>
 <body>
-	<header class="header" role="banner">
-		<h1 class="name">JOSÉ HERNÁN VARELA</h1>
-		<p class="title">Senior Backend Developer | Python • Django • FastAPI</p>
-		<div class="contact-info">
-			📧 jhernan33@gmail.com | 📱 +58 414 750 5247<br>
-			🌐 <a href="https://www.linkedin.com/in/jhernan-13465028">LinkedIn Profile</a> | 📍 Táchira, Venezuela<br>
-			<div class="remote-badge">🌎 Disponible para trabajo remoto internacional</div>
+	<!-- Skip Link: Accesibilidad -->
+	<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+	<!-- Theme Selector: Cambiar Paleta de Colores -->
+	<div class="theme-selector" role="region" aria-label="Selector de temas">
+		<button class="theme-toggle" title="Cambiar tema de colores" aria-label="Abrir selector de temas">
+			<svg class="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<circle cx="12" cy="12" r="5"></circle>
+				<line x1="12" y1="1" x2="12" y2="3"></line>
+				<line x1="12" y1="21" x2="12" y2="23"></line>
+				<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+				<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+				<line x1="1" y1="12" x2="3" y2="12"></line>
+				<line x1="21" y1="12" x2="23" y2="12"></line>
+				<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+				<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+			</svg>
+			<span>Tema</span>
+		</button>
+		<div class="theme-menu" hidden>
+			<div class="theme-menu__title">Selecciona un tema</div>
+			<button class="theme-option" data-theme="modern-tech" aria-label="Tema Modern Tech - Azul profesional">
+				<span class="theme-option__color" style="background: #2563eb;"></span>
+				<span class="theme-option__name">Modern Tech</span>
+			</button>
+			<button class="theme-option" data-theme="executive-elite" aria-label="Tema Executive Elite - Gris y dorado">
+				<span class="theme-option__color" style="background: #1f2937;"></span>
+				<span class="theme-option__name">Executive Elite</span>
+			</button>
+			<button class="theme-option" data-theme="modern-minimal" aria-label="Tema Modern Minimal - Verde mint">
+				<span class="theme-option__color" style="background: #047857;"></span>
+				<span class="theme-option__name">Modern Minimal</span>
+			</button>
+			<button class="theme-option" data-theme="crimson-pro" aria-label="Tema Crimson Professional - Rojo sofisticado">
+				<span class="theme-option__color" style="background: #dc2626;"></span>
+				<span class="theme-option__name">Crimson Pro</span>
+			</button>
+			<button class="theme-option" data-theme="slate-modern" aria-label="Tema Slate Modern - Gris y púrpura">
+				<span class="theme-option__color" style="background: #475569;"></span>
+				<span class="theme-option__name">Slate Modern</span>
+			</button>
 		</div>
+	</div>
+
+	<!-- ========== HEADER: Información Personal ========== -->
+	<header class="header" role="banner">
+		<h1 class="header__name">JOSÉ HERNÁN VARELA</h1>
+		<p class="header__title">Senior Backend Developer | Python • Django • FastAPI</p>
+
+		<!-- Contact Information: Accessible -->
+		<address class="contact-info" role="region" aria-label="Información de contacto profesional">
+			<div class="contact-item">
+				<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+					<polyline points="22,6 12,13 2,6"></polyline>
+				</svg>
+				<a href="mailto:jhernan33@gmail.com" class="contact-link">jhernan33@gmail.com</a>
+			</div>
+			<div class="contact-item">
+				<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+				</svg>
+				<a href="tel:+584147505247" class="contact-link">+58 414 750 5247</a>
+			</div>
+			<div class="contact-item">
+				<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="2" y1="12" x2="22" y2="12"></line>
+					<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+				</svg>
+				<a href="https://www.linkedin.com/in/jhernan-13465028" class="contact-link" target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
+			</div>
+			<div class="contact-item">
+				<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+					<circle cx="12" cy="10" r="3"></circle>
+				</svg>
+				<span>Táchira, Venezuela</span>
+			</div>
+			<div class="badge badge--remote">
+				<svg class="badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<circle cx="12" cy="12" r="10"></circle>
+					<line x1="2" y1="12" x2="22" y2="12"></line>
+					<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+				</svg>
+				<span>Disponible para trabajo remoto internacional</span>
+			</div>
+		</address>
 	</header>
 
-	<main role="main">
-		<section class="section" aria-labelledby="perfil-profesional">
-			<h2 class="section-title" id="perfil-profesional">Perfil Profesional</h2>
-			<div class="section-content">
-				<div class="profile-text">
+	<!-- ========== MAIN CONTENT ========== -->
+	<main id="main-content" role="main">
+
+		<!-- ========== Sección: Perfil Profesional ========== -->
+		<section class="section" aria-labelledby="sec-perfil">
+			<h2 class="section__title" id="sec-perfil">Perfil Profesional</h2>
+			<div class="section__content">
+				<p class="profile__text">
 					Desarrollador Backend Senior con <strong>14+ años de experiencia</strong> diseñando y desarrollando APIs escalables y sistemas de bases de datos robustos. Especializado en Python (Django/FastAPI), PostgreSQL y arquitecturas containerizadas. Experiencia comprobada liderando equipos técnicos y optimizando rendimiento de aplicaciones empresariales.
-				</div>
-				<div class="expertise">
+				</p>
+				<div class="expertise-box">
 					<strong>Expertise en:</strong> Desarrollo de APIs REST • Microservicios • Optimización de bases de datos • Administración de sistemas Linux • Containerización con Docker
 				</div>
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="experiencia-profesional">
-			<h2 class="section-title" id="experiencia-profesional">Experiencia Profesional</h2>
-			<div class="section-content">
-				<div class="job">
-					<div class="job-header">
-						<div class="job-title-line">
-							<div class="job-title">Jefe de Informática | <span class="company">PCVARELAVENEZUELA</span></div>
-							<div class="job-period">Mayo 2011 - Presente</div>
+		<!-- ========== Sección: Experiencia Profesional ========== -->
+		<section class="section" aria-labelledby="sec-experiencia">
+			<h2 class="section__title" id="sec-experiencia">Experiencia Profesional</h2>
+			<div class="section__content">
+
+				<!-- Job 1 -->
+				<article class="job">
+					<header class="job__header">
+						<div class="job__title-line">
+							<h3 class="job__title">
+								Jefe de Informática
+								<span class="job__company">PCVARELAVENEZUELA</span>
+							</h3>
+							<time class="job__period">Mayo 2011 - Presente</time>
 						</div>
-						<div class="job-location">San Cristóbal, Venezuela</div>
-					</div>
-					<ul class="job-description">
+						<p class="job__location">San Cristóbal, Venezuela</p>
+					</header>
+					<ul class="job__description">
 						<li><strong>Lidero departamento de TI</strong> supervisando infraestructura tecnológica completa de empresa familiar</li>
 						<li><strong>Desarrollo y arquitectura</strong> de sistemas internos usando Python/Django, mejorando eficiencia operativa en 60%</li>
 						<li><strong>Administración de infraestructura</strong> Linux (Ubuntu/Debian) y servicios cloud con 99.9% uptime</li>
 						<li><strong>Implementación de DevOps</strong> con Docker para deployment automatizado, reduciendo tiempo de despliegue 75%</li>
 						<li><strong>Gestión de bases de datos</strong> PostgreSQL/MySQL con optimización de queries complejas</li>
 					</ul>
-					<div class="stack"><span class="stack-label">Stack:</span> Python, Django, PostgreSQL, Linux, Docker, Vue.js, PHP, Laravel</div>
-				</div>
-
-				<div class="job">
-					<div class="job-header">
-						<div class="job-title-line">
-							<div class="job-title">Desarrollador Backend | <span class="company">Delzam</span></div>
-							<div class="job-period">Jun 2022 - Dic 2023</div>
-						</div>
-						<div class="job-location">Táchira, Venezuela • Freelance/Consultoría</div>
+					<div class="job__stack">
+						<strong class="job__stack-label">Stack:</strong> Python, Django, PostgreSQL, Linux, Docker, Vue.js, PHP, Laravel
 					</div>
-					<ul class="job-description">
+				</article>
+
+				<!-- Job 2 -->
+				<article class="job">
+					<header class="job__header">
+						<div class="job__title-line">
+							<h3 class="job__title">
+								Desarrollador Backend
+								<span class="job__company">Delzam</span>
+							</h3>
+							<time class="job__period">Jun 2022 - Dic 2023</time>
+						</div>
+						<p class="job__location">Táchira, Venezuela • Freelance/Consultoría</p>
+					</header>
+					<ul class="job__description">
 						<li><strong>Desarrollo de API REST</strong> con Python Django para sistema de gestión empresarial</li>
 						<li><strong>Integración de microservicios</strong> mejorando escalabilidad del sistema 40%</li>
 						<li><strong>Optimización de base de datos</strong> PostgreSQL, reduciendo tiempo de consultas complejas 50%</li>
 						<li><strong>Containerización completa</strong> del entorno de desarrollo y producción con Docker</li>
 					</ul>
-					<div class="stack"><span class="stack-label">Stack:</span> Python, Django, PostgreSQL, Docker, Linux</div>
-				</div>
-
-				<div class="job">
-					<div class="job-header">
-						<div class="job-title-line">
-							<div class="job-title">Desarrollador Backend | <span class="company">zippyttech tecnología e innovación</span></div>
-							<div class="job-period">Dic 2019 - Dic 2022</div>
-						</div>
-						<div class="job-location">Táchira, Venezuela • Consultoría</div>
+					<div class="job__stack">
+						<strong class="job__stack-label">Stack:</strong> Python, Django, PostgreSQL, Docker, Linux
 					</div>
-					<ul class="job-description">
+				</article>
+
+				<!-- Job 3 -->
+				<article class="job">
+					<header class="job__header">
+						<div class="job__title-line">
+							<h3 class="job__title">
+								Desarrollador Backend
+								<span class="job__company">zippyttech tecnología e innovación</span>
+							</h3>
+							<time class="job__period">Dic 2019 - Dic 2022</time>
+						</div>
+						<p class="job__location">Táchira, Venezuela • Consultoría</p>
+					</header>
+					<ul class="job__description">
 						<li><strong>Arquitectura y desarrollo</strong> de APIs REST para plataforma de gestión municipal</li>
 						<li><strong>Migración de sistema legacy</strong> a arquitectura moderna, mejorando rendimiento 3x</li>
 						<li><strong>Implementación de seguridad</strong> con autenticación JWT y control de acceso granular</li>
 						<li><strong>Desarrollo frontend</strong> complementario con Vue.js para dashboards administrativos</li>
 					</ul>
-					<div class="stack"><span class="stack-label">Stack:</span> Python, Django, FastAPI, Vue.js, PostgreSQL, Docker</div>
-				</div>
-
-				<div class="job">
-					<div class="job-header">
-						<div class="job-title-line">
-							<div class="job-title">Desarrollador Backend | <span class="company">Alcaldía del Municipio Guásimos</span></div>
-							<div class="job-period">Feb 2020 - May 2022</div>
-						</div>
-						<div class="job-location">Táchira, Venezuela • Proyecto Gubernamental</div>
+					<div class="job__stack">
+						<strong class="job__stack-label">Stack:</strong> Python, Django, FastAPI, Vue.js, PostgreSQL, Docker
 					</div>
-					<ul class="job-description">
+				</article>
+
+				<!-- Job 4 -->
+				<article class="job">
+					<header class="job__header">
+						<div class="job__title-line">
+							<h3 class="job__title">
+								Desarrollador Backend
+								<span class="job__company">Alcaldía del Municipio Guásimos</span>
+							</h3>
+							<time class="job__period">Feb 2020 - May 2022</time>
+						</div>
+						<p class="job__location">Táchira, Venezuela • Proyecto Gubernamental</p>
+					</header>
+					<ul class="job__description">
 						<li><strong>Desarrollo de sistema municipal</strong> para gestión de trámites ciudadanos</li>
 						<li><strong>API REST con Django</strong> procesando 1000+ transacciones diarias</li>
 						<li><strong>Integración con sistemas gubernamentales</strong> existentes usando web services</li>
 						<li><strong>Capacitación técnica</strong> al personal municipal en nuevas tecnologías</li>
 					</ul>
-					<div class="stack"><span class="stack-label">Stack:</span> Python, Django, PostgreSQL, Linux</div>
-				</div>
+					<div class="job__stack">
+						<strong class="job__stack-label">Stack:</strong> Python, Django, PostgreSQL, Linux
+					</div>
+				</article>
+
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="habilidades-tecnicas">
-			<h2 class="section-title" id="habilidades-tecnicas">Habilidades Técnicas</h2>
-			<div class="section-content">
+		<!-- ========== Sección: Habilidades Técnicas ========== -->
+		<section class="section" aria-labelledby="sec-habilidades">
+			<h2 class="section__title" id="sec-habilidades">Habilidades Técnicas</h2>
+			<div class="section__content">
 				<div class="skills-grid">
 					<div>
-						<div class="skill-category">
-							<h4>Lenguajes de Programación</h4>
-							<div class="skill-list">Python • PHP • JavaScript • SQL • PL/pgSQL</div>
-						</div>
-						
-						<div class="skill-category">
-							<h4>Frameworks Backend</h4>
-							<div class="skill-list">Django • FastAPI • Laravel • CodeIgniter 4 • Lumen</div>
-						</div>
-						
-						<div class="skill-category">
-							<h4>Bases de Datos</h4>
-							<div class="skill-list">PostgreSQL • MySQL • SQL Server • PostGIS • Redis</div>
-						</div>
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								Lenguajes de Programación
+							</h3>
+							<p class="skill-category__list">Python • PHP • JavaScript • SQL • PL/pgSQL</p>
+						</article>
+
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								Frameworks Backend
+							</h3>
+							<p class="skill-category__list">Django • FastAPI • Laravel • CodeIgniter 4 • Lumen</p>
+						</article>
+
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								Bases de Datos
+							</h3>
+							<p class="skill-category__list">PostgreSQL • MySQL • SQL Server • PostGIS • Redis</p>
+						</article>
 					</div>
 					<div>
-						<div class="skill-category">
-							<h4>DevOps & Infraestructura</h4>
-							<div class="skill-list">Docker • Linux (Ubuntu, Debian, Fedora) • Git • CI/CD • Shell Scripting</div>
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								DevOps & Infraestructura
+							</h3>
+							<p class="skill-category__list">Docker • Linux (Ubuntu, Debian, Fedora) • Git • CI/CD • Shell Scripting</p>
+						</article>
+
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								Frontend
+							</h3>
+							<p class="skill-category__list">Vue.js • HTML5 • CSS3 • Bootstrap • JavaScript ES6+</p>
+						</article>
+
+						<article class="skill-category">
+							<h3 class="skill-category__title">
+								<svg class="skill-category__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								APIs & Integraciones
+							</h3>
+							<p class="skill-category__list">REST APIs • GraphQL • JWT Authentication • Web Services • Microservicios</p>
+						</article>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ========== Sección: Certificaciones ========== -->
+		<section class="section" aria-labelledby="sec-certificaciones">
+			<h2 class="section__title" id="sec-certificaciones">Certificaciones</h2>
+			<div class="section__content">
+				<div class="card-grid">
+					<article class="card card--cert">
+						<h3 class="card__title">Curso de FastAPI</h3>
+						<p class="card__meta">2023</p>
+					</article>
+					<article class="card card--cert">
+						<h3 class="card__title">Curso de PostgreSQL</h3>
+						<p class="card__meta">2023</p>
+					</article>
+					<article class="card card--cert">
+						<h3 class="card__title">Curso de Backend con ExpressJS</h3>
+						<p class="card__meta">2022</p>
+					</article>
+					<article class="card card--cert">
+						<h3 class="card__title">Curso de Django</h3>
+						<p class="card__meta">2022</p>
+					</article>
+					<article class="card card--cert">
+						<h3 class="card__title">Curso de Herramientas de AI para Developers</h3>
+						<p class="card__meta">2023</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<!-- ========== Sección: Educación ========== -->
+		<section class="section" aria-labelledby="sec-educacion">
+			<h2 class="section__title" id="sec-educacion">Educación</h2>
+			<div class="section__content">
+				<article class="card card--edu">
+					<h3 class="card__title">Técnico Superior Universitario en Informática</h3>
+					<p>Instituto Universitario de La Frontera (IUFRONT) • <span class="card__meta">1998 - 2000</span></p>
+				</article>
+				<article class="card card--edu">
+					<h3 class="card__title">Desarrollador e-Business</h3>
+					<p>Instituto Universitario de Tecnología Agro-Industrial (IUTAI) • <span class="card__meta">2008 - 2009</span></p>
+				</article>
+			</div>
+		</section>
+
+		<!-- ========== Sección: Idiomas ========== -->
+		<section class="section" aria-labelledby="sec-idiomas">
+			<h2 class="section__title" id="sec-idiomas">Idiomas</h2>
+			<div class="section__content">
+				<div class="languages-list">
+					<article class="language-item">
+						<div class="language-header">
+							<strong>Español:</strong>
+							<div class="language-level" aria-label="Nivel nativo">
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+							</div>
 						</div>
-						
-						<div class="skill-category">
-							<h4>Frontend</h4>
-							<div class="skill-list">Vue.js • HTML5 • CSS3 • Bootstrap • JavaScript ES6+</div>
+						<p class="language-desc">Nativo</p>
+					</article>
+					<article class="language-item">
+						<div class="language-header">
+							<strong>Inglés:</strong>
+							<div class="language-level" aria-label="Nivel intermedio, 3 de 5">
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+							</div>
 						</div>
-						
-						<div class="skill-category">
-							<h4>APIs & Integraciones</h4>
-							<div class="skill-list">REST APIs • GraphQL • JWT Authentication • Web Services • Microservicios</div>
+						<p class="language-desc">Intermedio (B1) - En mejora continua</p>
+					</article>
+					<article class="language-item">
+						<div class="language-header">
+							<strong>Italiano:</strong>
+							<div class="language-level" aria-label="Nivel básico, 2 de 5">
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+								<svg class="language-star--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/></svg>
+							</div>
 						</div>
-					</div>
+						<p class="language-desc">Básico</p>
+					</article>
 				</div>
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="certificaciones">
-			<h2 class="section-title" id="certificaciones">Certificaciones</h2>
-			<div class="section-content">
-				<div class="cert-grid">
-					<div class="cert-item">
-						<div class="cert-title">Curso de FastAPI</div>
-						<div class="cert-year">2023</div>
-					</div>
-					<div class="cert-item">
-						<div class="cert-title">Curso de PostgreSQL</div>
-						<div class="cert-year">2023</div>
-					</div>
-					<div class="cert-item">
-						<div class="cert-title">Curso de Backend con ExpressJS</div>
-						<div class="cert-year">2022</div>
-					</div>
-					<div class="cert-item">
-						<div class="cert-title">Curso de Django</div>
-						<div class="cert-year">2022</div>
-					</div>
-					<div class="cert-item">
-						<div class="cert-title">Curso de Herramientas de AI para Developers</div>
-						<div class="cert-year">2023</div>
-					</div>
-				</div>
+		<!-- ========== Sección: Proyectos Destacados ========== -->
+		<section class="section" aria-labelledby="sec-proyectos">
+			<h2 class="section__title" id="sec-proyectos">Proyectos Destacados</h2>
+			<div class="section__content">
+				<article class="card card--project">
+					<h3 class="card__title">Sistema de Gestión Municipal</h3>
+					<p class="project-tech">Tecnologías: Python, Django, PostgreSQL, Docker</p>
+					<ul class="project-desc-list">
+						<li class="project-desc">
+							<svg class="project-desc__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<line x1="5" y1="12" x2="19" y2="12"></line>
+								<polyline points="12 5 19 12 12 19"></polyline>
+							</svg>
+							<span>API REST para gestión de trámites ciudadanos con más de 1000 usuarios activos</span>
+						</li>
+						<li class="project-desc">
+							<svg class="project-desc__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<line x1="5" y1="12" x2="19" y2="12"></line>
+								<polyline points="12 5 19 12 12 19"></polyline>
+							</svg>
+							<span>Dashboard administrativo con Vue.js para visualización de métricas en tiempo real</span>
+						</li>
+					</ul>
+				</article>
+				<article class="card card--project">
+					<h3 class="card__title">Migración de Sistema Legacy</h3>
+					<p class="project-tech">Tecnologías: Python, FastAPI, PostgreSQL, Docker</p>
+					<ul class="project-desc-list">
+						<li class="project-desc">
+							<svg class="project-desc__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<line x1="5" y1="12" x2="19" y2="12"></line>
+								<polyline points="12 5 19 12 12 19"></polyline>
+							</svg>
+							<span>Migración completa de sistema monolítico a arquitectura de microservicios</span>
+						</li>
+						<li class="project-desc">
+							<svg class="project-desc__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+								<line x1="5" y1="12" x2="19" y2="12"></line>
+								<polyline points="12 5 19 12 12 19"></polyline>
+							</svg>
+							<span>Mejora del rendimiento del sistema en 300% y reducción de costos de infraestructura</span>
+						</li>
+					</ul>
+				</article>
 			</div>
 		</section>
 
-		<section class="section" aria-labelledby="educacion">
-			<h2 class="section-title" id="educacion">Educación</h2>
-			<div class="section-content">
-				<div class="edu-item">
-					<div class="edu-title">Técnico Superior Universitario en Informática</div>
-					<div>Instituto Universitario de La Frontera (IUFRONT) • <span class="edu-year">1998 - 2000</span></div>
-				</div>
-				<div class="edu-item">
-					<div class="edu-title">Desarrollador e-Business</div>
-					<div>Instituto Universitario de Tecnología Agro-Industrial (IUTAI) • <span class="edu-year">2008 - 2009</span></div>
-				</div>
-			</div>
-		</section>
-
-		<section class="section" aria-labelledby="idiomas">
-			<h2 class="section-title" id="idiomas">Idiomas</h2>
-			<div class="section-content">
-				<div class="lang-item">
-					<span><strong>Español:</strong> Nativo</span>
-					<span class="lang-level">●●●●●</span>
-				</div>
-				<div class="lang-item">
-					<span><strong>Inglés:</strong> Intermedio (B1) - En mejora continua</span>
-					<span class="lang-level">●●●○○</span>
-				</div>
-				<div class="lang-item">
-					<span><strong>Italiano:</strong> Básico</span>
-					<span class="lang-level">●●○○○</span>
-				</div>
-			</div>
-		</section>
-
-		<section class="section" aria-labelledby="proyectos-destacados">
-			<h2 class="section-title" id="proyectos-destacados">Proyectos Destacados</h2>
-			<div class="section-content">
-				<div class="project-item">
-					<div class="project-title">Sistema de Gestión Municipal</div>
-					<div class="project-tech">Tecnologías: Python, Django, PostgreSQL, Docker</div>
-					<div class="project-desc">API REST para gestión de trámites ciudadanos con más de 1000 usuarios activos</div>
-					<div class="project-desc">Dashboard administrativo con Vue.js para visualización de métricas en tiempo real</div>
-				</div>
-				<div class="project-item">
-					<div class="project-title">Migración de Sistema Legacy</div>
-					<div class="project-tech">Tecnologías: Python, FastAPI, PostgreSQL, Docker</div>
-					<div class="project-desc">Migración completa de sistema monolítico a arquitectura de microservicios</div>
-					<div class="project-desc">Mejora del rendimiento del sistema en 300% y reducción de costos de infraestructura</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="section" aria-labelledby="disponibilidad">
-			<h2 class="section-title" id="disponibilidad">Disponibilidad</h2>
-			<div class="section-content">
-				<div class="availability">
+		<!-- ========== Sección: Disponibilidad ========== -->
+		<section class="section" aria-labelledby="sec-disponibilidad">
+			<h2 class="section__title" id="sec-disponibilidad">Disponibilidad</h2>
+			<div class="section__content">
+				<div class="availability-box">
 					<div class="availability-grid">
 						<div>
 							<div class="availability-item">
-								<span class="check-icon">✓</span>
-								<span class="availability-label">Trabajo remoto:</span> Disponible para proyectos internacionales
+								<svg class="availability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+									<polyline points="20 6 9 17 4 12"></polyline>
+								</svg>
+								<span class="availability-label">Trabajo remoto:</span>
+								<span>Disponible para proyectos internacionales</span>
 							</div>
 							<div class="availability-item">
-								<span class="check-icon">✓</span>
-								<span class="availability-label">Modalidad:</span> Full-time, Part-time, Freelance, Consultoría
+								<svg class="availability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+									<polyline points="20 6 9 17 4 12"></polyline>
+								</svg>
+								<span class="availability-label">Modalidad:</span>
+								<span>Full-time, Part-time, Freelance, Consultoría</span>
 							</div>
 						</div>
 						<div>
 							<div class="availability-item">
-								<span class="check-icon">✓</span>
-								<span class="availability-label">Zona horaria:</span> Flexible (UTC-4, adaptable)
+								<svg class="availability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+									<polyline points="20 6 9 17 4 12"></polyline>
+								</svg>
+								<span class="availability-label">Zona horaria:</span>
+								<span>Flexible (UTC-4, adaptable)</span>
 							</div>
 							<div class="availability-item">
-								<span class="check-icon">✓</span>
-								<span class="availability-label">Inicio:</span> Inmediato
+								<svg class="availability-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+									<polyline points="20 6 9 17 4 12"></polyline>
+								</svg>
+								<span class="availability-label">Inicio:</span>
+								<span>Inmediato</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
+
 	</main>
 
-	<footer class="quote" aria-label="Frase profesional">
-		"Transformando ideas en soluciones backend robustas y escalables"
+	<!-- ========== FOOTER ========== -->
+	<footer class="footer" role="contentinfo">
+		<p class="footer__quote">Transformando ideas en soluciones backend robustas y escalables</p>
 	</footer>
-	<script src="main.js"></script>
+
+	<!-- JavaScript -->
+	<script src="main.js" defer></script>
 </body>
 </html>
