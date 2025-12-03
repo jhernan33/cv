@@ -5,14 +5,16 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      # Router configuration
       - "traefik.http.routers.cv.rule=Host(`devapis.cloud`) && PathPrefix(`/cv`)"
+      - "traefik.http.routers.cv.entrypoints=websecure"
       - "traefik.http.routers.cv.tls=true"
       - "traefik.http.routers.cv.tls.certresolver=resolver"
-      - "traefik.http.routers.cv.entrypoints=websecure"
-      # Middleware: remover prefijo /cv antes de pasar a nginx
+      # Middleware: remove /cv prefix before sending to nginx
       - "traefik.http.middlewares.cv-stripprefix.stripprefix.prefixes=/cv"
       - "traefik.http.routers.cv.middlewares=cv-stripprefix@docker"
-      # Service port
+      # Service binding
+      - "traefik.http.routers.cv.service=cv"
       - "traefik.http.services.cv.loadbalancer.server.port=80"
     volumes:
       - ./src:/usr/share/nginx/html:ro  # Read-only por seguridad
