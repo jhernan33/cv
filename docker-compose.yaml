@@ -2,16 +2,18 @@ services:
   cv:
     image: nginx:1.27-alpine
     container_name: landpage
-    restart: unless-stopped  # Mejor que always
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cv.rule=Host(`devapis.cloud`) && PathPrefix(`/cv`)"
       - "traefik.http.routers.cv.tls=true"
       - "traefik.http.routers.cv.tls.certresolver=resolver"
       - "traefik.http.routers.cv.entrypoints=websecure"
-      # Middleware para strip prefix si es necesario
+      # Middleware: remover prefijo /cv antes de pasar a nginx
       - "traefik.http.middlewares.cv-stripprefix.stripprefix.prefixes=/cv"
-      - "traefik.http.routers.cv.middlewares=cv-stripprefix"
+      - "traefik.http.routers.cv.middlewares=cv-stripprefix@docker"
+      # Service port
+      - "traefik.http.services.cv.loadbalancer.server.port=80"
     volumes:
       - ./src:/usr/share/nginx/html:ro  # Read-only por seguridad
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
