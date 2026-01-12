@@ -163,9 +163,9 @@
 			
 			if (!this.modal) return;
 			
-			// Event listeners para abrir modal
-			document.querySelectorAll('.cert-thumb').forEach(thumb => {
-				thumb.addEventListener('click', () => this.open(thumb));
+			// Event listeners para abrir modal (cert-card en lugar de cert-thumb)
+			document.querySelectorAll('.cert-card').forEach(card => {
+				card.addEventListener('click', () => this.open(card));
 			});
 			
 			// Event listeners para cerrar modal
@@ -180,9 +180,11 @@
 			});
 		},
 		
-		open(thumb) {
-			const certSrc = thumb.dataset.cert;
-			const certTitle = thumb.dataset.title;
+		open(card) {
+			const certSrc = card.dataset.cert;
+			const certTitle = card.dataset.title;
+			
+			if (!certSrc) return;
 			
 			this.modalImg.src = certSrc;
 			this.modalImg.alt = `Certificado ${certTitle}`;
