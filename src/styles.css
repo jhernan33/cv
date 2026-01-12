@@ -220,12 +220,25 @@ strong {
 .nav__container {
 	max-width: var(--container-max);
 	margin: 0 auto;
-	padding: 0 var(--space-6);
+	padding: 0 var(--space-4);
 	height: var(--nav-height);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--space-6);
+	gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+	.nav__container {
+		padding: 0 var(--space-6);
+		gap: var(--space-6);
+	}
+}
+
+.nav__actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
 }
 
 .nav__logo {
@@ -242,9 +255,12 @@ strong {
 .nav__menu {
 	display: none;
 	gap: var(--space-1);
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
 	.nav__menu {
 		display: flex;
 	}
@@ -405,26 +421,36 @@ strong {
 	}
 }
 
-/* Mobile: avatar arriba centrado */
+/* Mobile: layout simplificado */
 @media (max-width: 767px) {
 	.hero__container {
-		grid-template-columns: 1fr;
-		grid-template-rows: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		text-align: center;
+		gap: var(--space-6);
 	}
 	
 	.hero__avatar {
-		grid-row: auto;
-		justify-content: center;
-		margin-bottom: var(--space-2);
+		order: 1;
+	}
+	
+	.hero__content {
+		order: 2;
+	}
+	
+	.hero__contact {
+		order: 3;
+		width: 100%;
+		max-width: 320px;
 	}
 	
 	.hero__tags {
 		justify-content: center;
 	}
 	
-	.hero__contact {
-		justify-content: center;
+	.contact-card {
+		justify-content: flex-start;
 	}
 }
 
@@ -566,10 +592,21 @@ strong {
 }
 
 .contact-card__icon {
-	width: 18px;
-	height: 18px;
+	width: 18px !important;
+	height: 18px !important;
+	min-width: 18px;
+	max-width: 18px;
+	min-height: 18px;
+	max-height: 18px;
 	color: var(--color-primary);
 	flex-shrink: 0;
+	display: inline-block;
+}
+
+/* Asegurar que SVGs inline tengan tamaño correcto */
+svg.contact-card__icon {
+	width: 18px !important;
+	height: 18px !important;
 }
 
 /* ============================================
