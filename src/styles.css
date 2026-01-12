@@ -306,12 +306,19 @@ strong {
 	font-weight: 500;
 	font-family: inherit;
 	transition: all var(--transition-fast);
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+	user-select: none;
 }
 
 .nav__btn:hover {
 	background: var(--bg-tertiary);
 	color: var(--text-primary);
 	border-color: var(--border-color);
+}
+
+.nav__btn:active {
+	transform: scale(0.95);
 }
 
 .nav__btn--pdf {

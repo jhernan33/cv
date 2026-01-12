@@ -17,10 +17,26 @@
 		
 		init() {
 			this.toggle = document.getElementById('theme-toggle');
-			if (!this.toggle) return;
+			if (!this.toggle) {
+				console.warn('Theme toggle button not found');
+				return;
+			}
 			
+			console.log('Theme toggle button found');
 			this.loadTheme();
-			this.toggle.addEventListener('click', () => this.switchTheme());
+			
+			// Usar tanto click como touchend para mejor compatibilidad móvil
+			this.toggle.addEventListener('click', (e) => {
+				console.log('Theme toggle clicked');
+				e.preventDefault();
+				this.switchTheme();
+			});
+			
+			this.toggle.addEventListener('touchend', (e) => {
+				console.log('Theme toggle touched');
+				e.preventDefault();
+				this.switchTheme();
+			}, { passive: false });
 		},
 		
 		loadTheme() {
@@ -45,6 +61,14 @@
 			
 			document.documentElement.setAttribute('data-theme', next);
 			localStorage.setItem(this.STORAGE_KEY, next);
+			
+			// Feedback visual para móvil
+			if (this.toggle) {
+				this.toggle.style.transform = 'scale(0.9)';
+				setTimeout(() => {
+					this.toggle.style.transform = '';
+				}, 150);
+			}
 		}
 	};
 
@@ -208,9 +232,25 @@
 	const PDFExport = {
 		init() {
 			this.btn = document.getElementById('export-pdf');
-			if (!this.btn) return;
+			if (!this.btn) {
+				console.warn('PDF export button not found');
+				return;
+			}
 			
-			this.btn.addEventListener('click', () => this.exportPDF());
+			console.log('PDF export button found');
+			
+			// Usar tanto click como touchend para mejor compatibilidad móvil
+			this.btn.addEventListener('click', (e) => {
+				console.log('PDF button clicked');
+				e.preventDefault();
+				this.exportPDF();
+			});
+			
+			this.btn.addEventListener('touchend', (e) => {
+				console.log('PDF button touched');
+				e.preventDefault();
+				this.exportPDF();
+			}, { passive: false });
 		},
 		
 		exportPDF() {
@@ -252,6 +292,7 @@
 	   ============================================ */
 	
 	function init() {
+		console.log('CV JS initialized');
 		ThemeManager.init();
 		SmoothScroll.init();
 		NavHighlight.init();
@@ -262,6 +303,7 @@
 		
 		// Mark JS as enabled
 		document.documentElement.setAttribute('data-js', 'true');
+		console.log('All modules loaded');
 	}
 
 	// Run on DOM ready
