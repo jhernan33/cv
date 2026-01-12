@@ -150,6 +150,87 @@
 	};
 
 	/* ============================================
+	   CERTIFICATE MODAL
+	   ============================================ */
+	
+	const CertModal = {
+		init() {
+			this.modal = document.getElementById('cert-modal');
+			this.modalImg = document.getElementById('cert-modal-img');
+			this.modalTitle = document.getElementById('cert-modal-title');
+			this.closeBtn = this.modal?.querySelector('.cert-modal__close');
+			this.overlay = this.modal?.querySelector('.cert-modal__overlay');
+			
+			if (!this.modal) return;
+			
+			// Event listeners para abrir modal
+			document.querySelectorAll('.cert-thumb').forEach(thumb => {
+				thumb.addEventListener('click', () => this.open(thumb));
+			});
+			
+			// Event listeners para cerrar modal
+			this.closeBtn?.addEventListener('click', () => this.close());
+			this.overlay?.addEventListener('click', () => this.close());
+			
+			// Cerrar con Escape
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && !this.modal.hidden) {
+					this.close();
+				}
+			});
+		},
+		
+		open(thumb) {
+			const certSrc = thumb.dataset.cert;
+			const certTitle = thumb.dataset.title;
+			
+			this.modalImg.src = certSrc;
+			this.modalImg.alt = `Certificado ${certTitle}`;
+			this.modalTitle.textContent = certTitle;
+			
+			this.modal.hidden = false;
+			document.body.style.overflow = 'hidden';
+			this.closeBtn?.focus();
+		},
+		
+		close() {
+			this.modal.hidden = true;
+			document.body.style.overflow = '';
+		}
+	};
+
+	/* ============================================
+	   PDF EXPORT
+	   ============================================ */
+	
+	const PDFExport = {
+		init() {
+			this.btn = document.getElementById('export-pdf');
+			if (!this.btn) return;
+			
+			this.btn.addEventListener('click', () => this.exportPDF());
+		},
+		
+		exportPDF() {
+			// Forzar tema claro para impresión
+			const currentTheme = document.documentElement.getAttribute('data-theme');
+			document.documentElement.setAttribute('data-theme', 'light');
+			
+			// Pequeño delay para que se apliquen los estilos
+			setTimeout(() => {
+				window.print();
+				
+				// Restaurar tema después de imprimir
+				if (currentTheme) {
+					document.documentElement.setAttribute('data-theme', currentTheme);
+				} else {
+					document.documentElement.removeAttribute('data-theme');
+				}
+			}, 100);
+		}
+	};
+
+	/* ============================================
 	   PRINT HANDLER
 	   ============================================ */
 	
@@ -158,7 +239,7 @@
 			document.addEventListener('keydown', (e) => {
 				if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
 					e.preventDefault();
-					window.print();
+					PDFExport.exportPDF();
 				}
 			});
 		}
@@ -173,6 +254,8 @@
 		SmoothScroll.init();
 		NavHighlight.init();
 		Accessibility.init();
+		CertModal.init();
+		PDFExport.init();
 		PrintHandler.init();
 		
 		// Mark JS as enabled
