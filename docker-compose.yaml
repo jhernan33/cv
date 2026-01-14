@@ -50,7 +50,6 @@ services:
       - "traefik.http.services.analytics.loadbalancer.server.port=8000"
     networks:
       - server
-      - developer
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
@@ -60,6 +59,4 @@ services:
 
 networks:
   server:
-    external: true
-  developer:
     external: true
