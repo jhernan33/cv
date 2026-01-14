@@ -377,7 +377,7 @@ GET https://devapis.cloud/api/analytics
 GET https://devapis.cloud/api/analytics/recent?limit=20
 
 # Dashboard visual
-GET https://devapis.cloud/dashboard
+GET https://devapis.cloud/analytics
 ```
 
 ### Dashboard de Analytics
@@ -393,7 +393,7 @@ El dashboard muestra en tiempo real:
 - **Sistemas operativos**
 - **Últimas 10 visitas** con detalles completos
 
-**Acceso**: [https://devapis.cloud/dashboard](https://devapis.cloud/dashboard)
+**Acceso**: [https://devapis.cloud/analytics](https://devapis.cloud/analytics)
 
 ### Despliegue del Analytics
 

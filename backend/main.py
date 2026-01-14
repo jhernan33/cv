@@ -361,7 +361,7 @@ async def get_recent_visits(limit: int = 20):
     }
 
 
-@app.get("/dashboard", response_class=HTMLResponse)
+@app.get("/analytics", response_class=HTMLResponse)
 async def analytics_dashboard():
     """Dashboard HTML simple para ver analytics"""
 

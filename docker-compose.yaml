@@ -19,6 +19,8 @@ services:
       - "traefik.http.services.cv.loadbalancer.server.port=80"
     volumes:
       - ./src:/usr/share/nginx/html:z
+    networks:
+      - server
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
       interval: 30s
@@ -40,8 +42,8 @@ services:
       - DB_PORT=5432
     labels:
       - "traefik.enable=true"
-      # Router para /api/* y /dashboard
-      - "traefik.http.routers.analytics.rule=Host(`devapis.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      # Router para /api/* y /analytics
+      - "traefik.http.routers.analytics.rule=Host(`devapis.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/analytics`))"
       - "traefik.http.routers.analytics.entrypoints=https"
       - "traefik.http.routers.analytics.tls=true"
       - "traefik.http.routers.analytics.tls.certresolver=resolver"

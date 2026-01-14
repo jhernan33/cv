@@ -122,7 +122,7 @@ curl https://devapis.cloud/api/analytics
 Abre en tu navegador:
 
 ```
-https://devapis.cloud/dashboard
+https://devapis.cloud/analytics
 ```
 
 ## 🔍 Paso 5: Verificar en el Frontend
@@ -130,7 +130,7 @@ https://devapis.cloud/dashboard
 1. Abre tu CV: `https://devapis.cloud/cv`
 2. Abre la consola del navegador (F12)
 3. Deberías ver: `✅ Visit tracked: 2026-01-13T...`
-4. Refresca el dashboard: `https://devapis.cloud/dashboard`
+4. Refresca el dashboard: `https://devapis.cloud/analytics`
 5. Deberías ver tu visita registrada
 
 ## 📊 Queries Útiles
@@ -295,8 +295,8 @@ Una vez que todo esté funcionando, puedes:
 3. O mover el dashboard a otro path privado:
    ```python
    # En backend/main.py cambiar:
-   @app.get("/dashboard")  # a
-   @app.get("/private/dashboard")
+   @app.get("/analytics")  # a
+   @app.get("/private/analytics")
    ```
 
 ## 📞 Soporte
