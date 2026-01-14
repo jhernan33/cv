@@ -16,6 +16,52 @@ from contextlib import asynccontextmanager
 DB_POOL = None
 
 
+async def init_database():
+    """Inicializar la base de datos creando la tabla si no existe"""
+    global DB_POOL
+
+    DDL_SCRIPT = """
+    -- Tabla de visitas
+    CREATE TABLE IF NOT EXISTS cv_visits (
+        id SERIAL PRIMARY KEY,
+        ip_address VARCHAR(45) NOT NULL,
+        user_agent TEXT,
+        browser VARCHAR(100),
+        os VARCHAR(100),
+        device_type VARCHAR(20),
+        referer TEXT,
+        language VARCHAR(50),
+        visited_at TIMESTAMP DEFAULT NOW(),
+        created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    -- Índices para mejorar performance de queries
+    CREATE INDEX IF NOT EXISTS idx_cv_visits_ip ON cv_visits(ip_address);
+    CREATE INDEX IF NOT EXISTS idx_cv_visits_visited_at ON cv_visits(visited_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_cv_visits_device ON cv_visits(device_type);
+    CREATE INDEX IF NOT EXISTS idx_cv_visits_browser ON cv_visits(browser);
+
+    -- Vista para analytics rápidos
+    CREATE OR REPLACE VIEW cv_analytics_summary AS
+    SELECT
+        COUNT(*) as total_visits,
+        COUNT(DISTINCT ip_address) as unique_visitors,
+        COUNT(*) FILTER (WHERE visited_at > NOW() - INTERVAL '1 day') as visits_last_24h,
+        COUNT(*) FILTER (WHERE visited_at > NOW() - INTERVAL '7 days') as visits_last_7d,
+        COUNT(*) FILTER (WHERE visited_at > NOW() - INTERVAL '30 days') as visits_last_30d,
+        COUNT(*) FILTER (WHERE visited_at::date = CURRENT_DATE) as visits_today
+    FROM cv_visits;
+    """
+
+    async with DB_POOL.acquire() as conn:
+        try:
+            await conn.execute(DDL_SCRIPT)
+            print("✅ Database schema initialized")
+        except Exception as e:
+            print(f"⚠️  Database initialization error: {e}")
+            # No fallar el startup si ya existe
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Gestión del ciclo de vida de la aplicación"""
@@ -32,6 +78,9 @@ async def lifespan(app: FastAPI):
         max_size=10
     )
     print("✅ Database pool created")
+
+    # Inicializar base de datos (crear tabla si no existe)
+    await init_database()
 
     yield
 

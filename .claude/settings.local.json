@@ -14,7 +14,8 @@
       "Bash(docker network create:*)",
       "Bash(chmod:*)",
       "Bash(docker exec:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(docker inspect:*)"
     ],
     "deny": [],
     "ask": []

@@ -48,6 +48,9 @@ services:
       # Service binding
       - "traefik.http.routers.analytics.service=analytics"
       - "traefik.http.services.analytics.loadbalancer.server.port=8000"
+    networks:
+      - server
+      - developer
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
@@ -56,6 +59,7 @@ services:
       start_period: 20s
 
 networks:
-  default:
-    name: server
+  server:
+    external: true
+  developer:
     external: true
