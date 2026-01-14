@@ -26,6 +26,35 @@ services:
       retries: 3
       start_period: 40s
 
+  # Backend de Analytics
+  analytics-api:
+    build: ./backend
+    image: cv-analytics:latest
+    container_name: cv-analytics
+    restart: unless-stopped
+    environment:
+      - DB_HOST=postgres17
+      - DB_NAME=${DB_NAME:-postgres}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_PORT=5432
+    labels:
+      - "traefik.enable=true"
+      # Router para /api/* y /dashboard
+      - "traefik.http.routers.analytics.rule=Host(`devapis.cloud`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.analytics.entrypoints=https"
+      - "traefik.http.routers.analytics.tls=true"
+      - "traefik.http.routers.analytics.tls.certresolver=resolver"
+      # Service binding
+      - "traefik.http.routers.analytics.service=analytics"
+      - "traefik.http.services.analytics.loadbalancer.server.port=8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
 networks:
   default:
     name: server

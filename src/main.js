@@ -275,7 +275,7 @@
 	/* ============================================
 	   PRINT HANDLER
 	   ============================================ */
-	
+
 	const PrintHandler = {
 		init() {
 			document.addEventListener('keydown', (e) => {
@@ -284,6 +284,39 @@
 					PDFExport.exportPDF();
 				}
 			});
+		}
+	};
+
+	/* ============================================
+	   ANALYTICS TRACKER
+	   ============================================ */
+
+	const Analytics = {
+		init() {
+			// Esperar un momento antes de trackear para evitar false positives
+			setTimeout(() => {
+				this.trackVisit();
+			}, 1000);
+		},
+
+		async trackVisit() {
+			try {
+				const response = await fetch('https://devapis.cloud/api/track', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					credentials: 'omit'
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					console.log('✅ Visit tracked:', data.timestamp);
+				}
+			} catch (error) {
+				// Silenciar errores de analytics para no afectar UX
+				console.debug('Analytics tracking failed:', error.message);
+			}
 		}
 	};
 
@@ -300,7 +333,8 @@
 		CertModal.init();
 		PDFExport.init();
 		PrintHandler.init();
-		
+		Analytics.init();
+
 		// Mark JS as enabled
 		document.documentElement.setAttribute('data-js', 'true');
 		console.log('All modules loaded');

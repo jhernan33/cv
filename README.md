@@ -36,6 +36,14 @@ Landing page profesional de CV/Portfolio para Senior Backend Developer. Sitio es
 - **Security Headers**: CSP, HSTS, X-Frame-Options, etc.
 - **Health Checks**: Monitoreo integrado de contenedor
 
+### 📊 Analytics (NUEVO)
+- **Backend Propio**: FastAPI para tracking de visitas
+- **Base de Datos**: PostgreSQL para almacenamiento
+- **Dashboard en Tiempo Real**: Visualización de estadísticas
+- **Datos Capturados**: IP, navegador, OS, dispositivo, referer, idioma
+- **Sin Bloqueos**: No bloqueado por ad-blockers
+- **100% Privado**: Control total de tus datos
+
 ## 🛠 Stack Tecnológico
 
 | Categoría | Tecnologías |
@@ -43,6 +51,8 @@ Landing page profesional de CV/Portfolio para Senior Backend Developer. Sitio es
 | **Frontend** | HTML5, CSS3 (BEM), Vanilla JavaScript ES6+ |
 | **Styling** | CSS Custom Properties, CSS Grid, Flexbox |
 | **Server** | Nginx 1.27 Alpine |
+| **Analytics Backend** | FastAPI + asyncpg + uvicorn |
+| **Database** | PostgreSQL 17 |
 | **Container** | Docker, Docker Compose |
 | **Proxy** | Traefik (TLS, routing, strip prefix) |
 | **Deployment** | devapis.cloud con path-based routing |
@@ -334,6 +344,110 @@ done
 }
 </script>
 ```
+
+## 📊 Sistema de Analytics
+
+El CV incluye un sistema completo de analytics propio con backend FastAPI y PostgreSQL.
+
+### Características del Analytics
+
+- **Tracking Automático**: Registra visitas automáticamente sin intervención
+- **Datos Capturados**:
+  - IP del visitante (desde x-forwarded-for de Traefik)
+  - Navegador y versión
+  - Sistema operativo
+  - Tipo de dispositivo (Mobile/Desktop)
+  - Referrer (de dónde viene)
+  - Idioma preferido
+  - Timestamp UTC
+
+### Endpoints Disponibles
+
+```bash
+# Health check
+GET https://devapis.cloud/health
+
+# Tracking de visita (llamado automáticamente por el frontend)
+POST https://devapis.cloud/api/track
+
+# Ver estadísticas
+GET https://devapis.cloud/api/analytics
+
+# Ver visitas recientes
+GET https://devapis.cloud/api/analytics/recent?limit=20
+
+# Dashboard visual
+GET https://devapis.cloud/dashboard
+```
+
+### Dashboard de Analytics
+
+El dashboard muestra en tiempo real:
+- **Visitas totales**
+- **Visitantes únicos** (por IP)
+- **Visitas últimos 7 días**
+- **Visitas hoy**
+- **Top navegadores**
+- **Top IPs** con última visita
+- **Estadísticas de dispositivos** (Mobile vs Desktop)
+- **Sistemas operativos**
+- **Últimas 10 visitas** con detalles completos
+
+**Acceso**: [https://devapis.cloud/dashboard](https://devapis.cloud/dashboard)
+
+### Despliegue del Analytics
+
+Ver documentación completa en [DEPLOY-ANALYTICS.md](DEPLOY-ANALYTICS.md)
+
+**Quick Start**:
+
+```bash
+# 1. Configurar variables de entorno
+cp .env.example .env
+nano .env  # Editar con credenciales reales
+
+# 2. Ejecutar script de despliegue automatizado
+./deploy-analytics.sh
+
+# 3. Verificar que funciona
+curl https://devapis.cloud/health
+curl https://devapis.cloud/api/analytics
+```
+
+### Queries Útiles
+
+```bash
+# Ver todas las visitas
+docker exec -it postgres17 psql -U postgres -d postgres \
+  -c "SELECT * FROM cv_visits ORDER BY visited_at DESC LIMIT 10;"
+
+# Ver resumen
+docker exec -it postgres17 psql -U postgres -d postgres \
+  -c "SELECT * FROM cv_analytics_summary;"
+
+# Top 10 IPs
+docker exec -it postgres17 psql -U postgres -d postgres \
+  -c "SELECT ip_address, COUNT(*) as visits FROM cv_visits GROUP BY ip_address ORDER BY visits DESC LIMIT 10;"
+```
+
+### Arquitectura del Analytics
+
+```
+Frontend (JavaScript) ──POST /api/track──> FastAPI Backend
+                                               │
+                                               ├──> PostgreSQL
+                                               │    (cv_visits table)
+                                               │
+Dashboard (HTML) ────GET /api/analytics───────┘
+```
+
+### Privacidad y GDPR
+
+El sistema registra IPs para fines estadísticos. Se recomienda:
+1. Agregar política de privacidad en el footer
+2. Informar al usuario sobre el tracking
+3. Ofrecer opción de opt-out
+4. Implementar derecho al olvido (eliminar datos bajo petición)
 
 ## 📄 Licencia
 
