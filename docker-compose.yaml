@@ -1,6 +1,7 @@
 services:
   cv:
-    image: nginx:1.27-alpine
+    build: .
+    image: landpage:latest
     container_name: landpage
     restart: unless-stopped
     labels:
@@ -17,8 +18,7 @@ services:
       - "traefik.http.routers.cv.service=cv"
       - "traefik.http.services.cv.loadbalancer.server.port=80"
     volumes:
-      - ./src:/usr/share/nginx/html:ro  # Read-only por seguridad
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./src:/usr/share/nginx/html:z
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
       interval: 30s
