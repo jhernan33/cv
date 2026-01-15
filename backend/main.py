@@ -7,7 +7,7 @@ FastAPI backend para tracking de visitas al CV
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import asyncpg
 import os
 from contextlib import asynccontextmanager
@@ -218,6 +218,17 @@ async def track_visit(request: Request):
         return {"status": "error", "message": str(e)}
 
 
+def to_venezuela_time(dt):
+    """Convierte datetime UTC a hora de Venezuela (UTC-4)"""
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        # Asumir que es UTC si no tiene timezone
+        dt = dt.replace(tzinfo=timezone.utc)
+    venezuela_tz = timezone(timedelta(hours=-4))
+    return dt.astimezone(venezuela_tz)
+
+
 @app.get("/api/analytics")
 async def get_analytics():
     """
@@ -307,7 +318,7 @@ async def get_analytics():
         "top_ips": [
             {
                 **dict(r),
-                "last_visit": r["last_visit"].isoformat() if r["last_visit"] else None
+                "last_visit": to_venezuela_time(r["last_visit"]).isoformat() if r["last_visit"] else None
             }
             for r in top_ips
         ],
@@ -354,7 +365,7 @@ async def get_recent_visits(limit: int = 20):
         "visits": [
             {
                 **dict(v),
-                "visited_at": v["visited_at"].isoformat()
+                "visited_at": to_venezuela_time(v["visited_at"]).isoformat()
             }
             for v in visits
         ]
