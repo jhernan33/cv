@@ -4,235 +4,158 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Professional CV/Portfolio landing page deployed as a static site. Zero-build, zero-dependency vanilla JavaScript project served via Nginx in Docker with Traefik reverse proxy.
+Professional CV/Portfolio landing page plus a self-hosted visit-tracking analytics service. Two independently deployed pieces that share one `docker-compose.yaml` and one Traefik reverse proxy:
 
-**Production URL:** https://devapis.cloud/cv
+1. **Frontend (`src/`)** — Zero-build, zero-dependency vanilla JS static site served by Nginx.
+2. **Analytics backend (`backend/`)** — FastAPI + asyncpg service that records visits into PostgreSQL and exposes a stats API and a dashboard.
+
+**Production URLs (all on `devapis.cloud`, routed by path):**
+- `/cv` → static CV site
+- `/api/track` (POST) → records a visit
+- `/api/analytics`, `/api/analytics/recent` → stats JSON
+- `/analytics` → HTML dashboard
+- `/health` → backend + DB health
 
 ## Development Commands
 
-### Local Development
+### Frontend — local
 ```bash
-# Serve locally with any static server
+# Serve the static site (no build step)
 python -m http.server 8000 --directory src/
 # or
 npx serve src/
-
-# Access at http://localhost:8000
+# → http://localhost:8000
 ```
 
-### Docker Development
+### Frontend — Docker
 ```bash
-# Build and run locally
 docker build -t landpage .
-docker run -p 8080:80 landpage
-
-# Access at http://localhost:8080
+docker run -p 8080:80 landpage   # → http://localhost:8080
 ```
 
-### Production Deployment
+### Backend — local
 ```bash
-# Deploy with Docker Compose (requires external 'server' network and Traefik)
-docker compose up -d
+cd backend
+pip install -r requirements.txt
+# Requires a reachable PostgreSQL; configure via env vars (see below)
+uvicorn main:app --reload --port 8000   # → http://localhost:8000
+```
 
-# View logs
-docker compose logs -f
-
-# Restart service
-docker compose restart
-
-# Stop and remove
+### Full stack — Docker Compose (production)
+```bash
+docker compose up -d              # builds+runs cv + analytics-api
+docker compose logs -f            # all services
+docker compose logs -f analytics-api
+docker compose restart            # restart both
 docker compose down
+
+# Convenience scripts:
+./deploy-analytics.sh             # first-time analytics setup (checks postgres17, network, seeds schema, verifies endpoints)
+./update-production.sh            # rebuild analytics-api and force-recreate both services
 ```
 
 ### Testing
-No automated tests. Manual testing checklist:
-- Theme toggle (light/dark)
-- Smooth scroll navigation
-- Certificate modal (click any cert card)
-- PDF export button
-- Responsive layouts (mobile, tablet, desktop)
-- Accessibility (keyboard navigation, screen reader)
+No automated tests. Manual checklist:
+- **Frontend:** theme toggle (light/dark), smooth-scroll nav, certificate modal (click any cert card), PDF export button, responsive layouts, keyboard/screen-reader accessibility.
+- **Backend:** `curl https://devapis.cloud/health`, `curl -X POST https://devapis.cloud/api/track`, `curl https://devapis.cloud/api/analytics`.
 
 ## Architecture
 
-### Zero-Build Philosophy
-This project intentionally has **no build system**. Source files in `src/` are served directly:
-- No transpilation
-- No bundling
-- No minification
-- No npm dependencies
+### Zero-Build Frontend Philosophy
+The `src/` frontend intentionally has **no build system** — files are served directly, no transpile/bundle/minify, no npm deps. Edits are reflected on refresh (or container restart). This constraint does **not** apply to the backend, which is a normal Python service.
 
-Changes to HTML/CSS/JS are immediately reflected (refresh browser or restart container).
+### Frontend Modules (`src/main.js`)
+IIFE modules, each with an `init()` called from a single `init()` on DOM ready. No inter-module dependencies. `data-js="true"` is set on `<html>` once JS loads.
 
-### Frontend Architecture (Vanilla JS Modules)
-
-JavaScript is organized as IIFE modules in `src/main.js`:
-
-```javascript
-ThemeManager      // Dark/light mode with localStorage persistence
-SmoothScroll      // Anchor navigation with history.pushState
-NavHighlight      // Active nav link via Intersection Observer
-Accessibility     // Skip links, ARIA live regions
-CertModal         // Certificate image lightbox
-PDFExport         // Print/PDF generation with forced light theme
-PrintHandler      // Ctrl+P / Cmd+P keyboard shortcut
+```
+ThemeManager   Dark/light mode, localStorage key `cv-color-scheme`
+SmoothScroll   Anchor nav with history.pushState
+NavHighlight   Active nav link via Intersection Observer
+Accessibility  Skip links, ARIA live regions
+CertModal      Certificate image lightbox
+PDFExport      Print/PDF with forced light theme
+PrintHandler   Ctrl+P / Cmd+P shortcut
+Analytics      POSTs to https://devapis.cloud/api/track ~1s after load; fails silently
 ```
 
-Each module has `init()` method called on DOMContentLoaded. Modules are self-contained with no inter-module dependencies.
+The `Analytics` module hardcodes the production `/api/track` URL and swallows all errors so tracking never affects UX. It sends no body — the backend derives everything from request headers.
 
-### CSS Architecture
+### Backend Architecture (`backend/main.py`)
+Single-file FastAPI app. Key points:
 
-**Methodology:** BEM (Block Element Modifier)
-- Blocks: `.nav`, `.hero`, `.timeline`, `.cert-card`
-- Elements: `.nav__link`, `.hero__title`, `.timeline__item`
-- Modifiers: `.nav__link--active`, `.nav__btn--pdf`
+- **Connection pool:** one global `asyncpg` pool created in the `lifespan` handler (`min_size=1, max_size=10`), closed on shutdown.
+- **Schema auto-init:** on startup `init_database()` runs `CREATE TABLE IF NOT EXISTS` / indexes / the `cv_analytics_summary` view. This mirrors `database/init-analytics.sql`. **If you change the schema, update both** `main.py`'s DDL and `database/init-analytics.sql`.
+- **Visit tracking:** `/api/track` reads client IP from `x-forwarded-for` (Traefik sets this; takes the first IP if comma-separated), parses browser/OS/device from the User-Agent via a hand-rolled `parse_user_agent()` (no external UA library), and inserts a row. Errors return `{"status":"error"}` rather than raising.
+- **Timezone:** stored timestamps are UTC; API responses convert display times to Venezuela time (UTC-4) via `to_venezuela_time()`.
+- **CORS:** restricted to `https://devapis.cloud` and localhost origins.
+- **Data model:** single table `cv_visits` (ip, user_agent, browser, os, device_type, referer, language, visited_at, created_at).
 
-**Theming:** CSS Custom Properties with `[data-theme="dark"]` override
-- Design tokens defined in `:root`
-- Dark mode overrides in `[data-theme="dark"]`
-- System preference detected, user choice persisted
-
-**Layout Strategy:**
-- Mobile-first responsive design
-- CSS Grid for complex layouts (hero, certifications)
-- Flexbox for linear layouts (nav, timeline)
-- Breakpoints: 380px, 640px, 768px, 1024px
+Note: the `/` root endpoint's self-description still advertises `GET /dashboard`, but the actual dashboard route is `/analytics`.
 
 ### Deployment Architecture
-
 ```
-Browser (HTTPS)
-    ↓
-Traefik (reverse proxy, TLS termination)
-    ↓ strips /cv prefix
-Nginx Container (port 80, internal)
-    ↓ serves from /usr/share/nginx/html
-Static Files (src/ mounted read-only)
+Browser (HTTPS) → Traefik (TLS termination, path routing on devapis.cloud)
+    ├─ PathPrefix(/cv)                    → strip /cv → cv (Nginx :80, serves src/)
+    └─ PathPrefix(/api) or /analytics     → analytics-api (FastAPI :8000)
 ```
 
-**Traefik Configuration:**
-- Host: `devapis.cloud`
-- PathPrefix: `/cv`
-- Middleware: `cv-stripprefix` removes `/cv` before forwarding to Nginx
-- TLS: Automatic via cert resolver
-- Network: External `server` network (must exist)
+Both services join the **external `server` Docker network** (must already exist; `docker network create server` if not) and rely on a **PostgreSQL container named `postgres17`** on that same network. Traefik uses cert resolver `resolver` for automatic TLS. Routing labels live in `docker-compose.yaml`; the `/cv` prefix is stripped by the `cv-stripprefix` middleware before reaching Nginx.
 
-**Nginx Configuration Highlights:**
-- SPA routing: All 404s → `index.html`
-- Cache strategy:
-  - `index.html`: No cache (`must-revalidate`)
-  - Assets (images, CSS, JS): 1 year immutable cache
-- Security headers: CSP, X-Frame-Options, HSTS
-- Gzip compression enabled
-- `.git` directory blocked
+**Nginx (`nginx.conf`):** only a `server {}` block (global directives were removed — they conflict with `nginx:1.27-alpine` defaults and caused `duplicate directive` startup crashes; keep it that way). SPA fallback (404→index.html), `index.html` no-cache, assets cached 1y immutable, security headers (CSP restricts scripts to `'self'`, so keep JS in external `main.js`), gzip, `.git`/dotfiles blocked.
+
+## Configuration & Secrets
+
+Unlike the pure-static original, the backend **does use secrets**. `.env` (gitignored) supplies DB credentials consumed by `docker-compose.yaml` → the analytics container:
+
+```
+DB_HOST=postgres17
+DB_NAME=postgres
+DB_USER=postgres
+DB_PASSWORD=...
+DB_PORT=5432
+```
+
+Copy `.env.example` → `.env` and set the real password. Never commit `.env`. See `DEPLOY-ANALYTICS.md` for the full first-deploy runbook and `analytics-backend-proposal.md` for design rationale.
 
 ## Code Modification Guidelines
 
-### HTML Changes (`src/index.html`)
-- Language: Spanish (lang="es")
-- Use semantic HTML5 tags
-- Add ARIA labels for accessibility
-- Maintain BEM class naming
+### HTML (`src/index.html`)
+Spanish (`lang="es"`), semantic HTML5, ARIA labels, BEM class names.
 
-### CSS Changes (`src/styles.css`)
-- Follow BEM naming
-- Use CSS custom properties (no hardcoded colors)
-- Add dark mode support: duplicate rules under `[data-theme="dark"]`
-- Mobile-first: base styles for mobile, `@media (min-width: ...)` for desktop
+### CSS (`src/styles.css`)
+- BEM naming (`.block__element--modifier`).
+- CSS custom properties only — no hardcoded colors. Define token in `:root`, override under `[data-theme="dark"]`.
+- Mobile-first: base styles for mobile, `@media (min-width: ...)` for larger. Breakpoints: 380px, 640px, 768px, 1024px.
 
-### JavaScript Changes (`src/main.js`)
-- Use IIFE module pattern
-- No external dependencies allowed
-- Add new modules with `init()` method
-- Call module in main `init()` function
-- Support both `click` and `touchend` events for mobile
-- Set `data-js="true"` attribute when JS loads
+### JavaScript (`src/main.js`)
+- IIFE module with `init()`; register it in the main `init()`.
+- No external dependencies.
+- Support both `click` and `touchend` for mobile buttons.
+- CSP forbids inline scripts — all JS must live in `main.js`.
 
-### Adding Images
-1. Place in `src/assets/images/`
-2. Reference with relative path: `assets/images/filename.ext`
-3. Add `width` and `height` attributes explicitly
-4. Use descriptive `alt` text
+### Backend (`backend/main.py`)
+- Keep it dependency-light (currently only fastapi, uvicorn, asyncpg). Adding a lib means editing `backend/requirements.txt` and rebuilding the image.
+- Schema changes: update DDL in `main.py` **and** `database/init-analytics.sql`.
+- Acquire connections via `DB_POOL.acquire()`; never open ad-hoc connections.
 
-### Nginx Configuration Changes
-Edit `nginx.conf` and restart container:
-```bash
-docker compose restart
-```
+### Images
+Place in `src/assets/images/`, reference relatively (`assets/images/x.png`), set explicit `width`/`height`, descriptive `alt`.
 
 ## Important Constraints
 
-### Security
-- All volumes mounted **read-only** (`:ro`) in production
-- CSP policy restricts inline scripts (use external `main.js`)
-- No environment variables with secrets (static site only)
-
-### Browser Compatibility
-- ES6+ JavaScript (no transpilation)
-- CSS Grid and Flexbox required
-- Intersection Observer API required
-- No IE11 support
-
-### Performance
-- Keep total page size under 200KB (currently ~76KB)
-- Images should be optimized (consider WebP)
-- CSS/JS files are not minified (acceptable for this size)
-
-## Common Patterns
-
-### Adding a New Section
-1. Add `<section id="new-section">` in HTML
-2. Add nav link: `<a href="#new-section" class="nav__link">`
-3. NavHighlight will auto-detect and highlight
-4. Add section styles in CSS following BEM
-
-### Adding a New Module
-```javascript
-const NewModule = {
-    init() {
-        // Setup code
-        this.setupEventListeners();
-    },
-
-    setupEventListeners() {
-        // Event handlers
-    }
-};
-
-// Add to main init()
-function init() {
-    // ...existing modules...
-    NewModule.init();
-}
-```
-
-### Dark Mode Support
-```css
-:root {
-    --color-example: #0ea5e9;
-}
-
-[data-theme="dark"] {
-    --color-example: #38bdf8;
-}
-```
+- **`-old.*` files** (`*-old.html/css/js` in `src/`) are gitignored backups — ignore them; edit the live `index.html` / `styles.css` / `main.js`.
+- **Frontend volumes** are mounted read-only in production; changes require the file to be present in `src/`.
+- **Browser support:** ES6+, CSS Grid/Flexbox, Intersection Observer required; no IE11.
+- **Performance budget:** keep total frontend page size well under 200KB (currently ~76KB); CSS/JS unminified is acceptable at this size.
 
 ## Troubleshooting
 
-### Changes not appearing
-1. Clear browser cache (Ctrl+Shift+R / Cmd+Shift+R)
-2. Check volume mount: `docker compose down && docker compose up -d`
-3. Verify file saved in `src/` directory
+**Frontend changes not appearing:** hard-refresh (Ctrl+Shift+R); `docker compose down && up -d`; confirm the file saved in `src/`.
 
-### Traefik routing issues
-1. Ensure external `server` network exists: `docker network ls`
-2. Check Traefik logs: `docker logs traefik`
-3. Verify labels: `docker inspect landpage | grep traefik`
+**Traefik routing:** ensure external `server` network exists (`docker network ls`); check `docker logs traefik`; inspect labels with `docker inspect`.
 
-### Theme not persisting
-Check localStorage key `cv-color-scheme` in browser DevTools → Application → Local Storage
+**Backend unhealthy / DB errors:** `/health` returns 503 if the pool can't reach Postgres. Verify the `postgres17` container is up on the `server` network and `.env` credentials are correct; `docker compose logs -f analytics-api`.
 
-### PDF export issues
-- PDF export uses browser print dialog
-- Theme is forced to light mode during print
-- Use print CSS media query for print-specific styles
+**Theme not persisting:** check `localStorage` key `cv-color-scheme` (DevTools → Application → Local Storage).
+
+**PDF export:** uses the browser print dialog; theme is forced light during print — use the print media query for print-only styles.
